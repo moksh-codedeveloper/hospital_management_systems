@@ -36,7 +36,7 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ message: "Invalid email or password" });
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id, email:user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     // Set cookie first
     res.cookie("token", token, {
@@ -51,5 +51,23 @@ export const login = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+export const logout = (req, res) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0), // Expire immediately
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+    return res.status(200).json({
+      message: "Logout successful",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
   }
 };
