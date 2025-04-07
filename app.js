@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routers/userRoutes.js"
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
+import appointmentRoutes from "./routers/appointmentRoutes.js"
 dotenv.config();
 connectDB();
 const app = express();
@@ -20,7 +21,7 @@ app.use(cors(corsOptions));
 
 
 app.use("/api/auth", authRoutes);
-
+app.use("/appointments",appointmentRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

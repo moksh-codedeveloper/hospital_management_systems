@@ -10,6 +10,9 @@ router.post("/", protect, createAppointment);
 // GET user's appointments
 router.get("/", protect, getAppointments);
 
+// ✅ Update and Delete appointment using :id
+router
+  .route("/:id")
+  .patch(protect, updateAppointment)   // PATCH: Update appointment
+  .delete(protect, deleteAppointment); // DELETE: Delete appointment
 export default router;
-router.put('/update/:id', protect, updateAppointment);
-router.delete('/delete/:id', protect, deleteAppointment);
