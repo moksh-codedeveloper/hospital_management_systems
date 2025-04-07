@@ -21,7 +21,7 @@ app.use(cors(corsOptions));
 
 
 app.use("/api/auth", authRoutes);
-app.use("/appointments",appointmentRoutes);
+app.use("/api/appointments",appointmentRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

@@ -5,10 +5,10 @@ import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // POST new appointment
-router.post("/", protect, createAppointment);
+router.post("/create", protect, createAppointment);
 
 // GET user's appointments
-router.get("/", protect, getAppointments);
+router.get("/get", protect, getAppointments);
 
 // ✅ Update and Delete appointment using :id
 router
