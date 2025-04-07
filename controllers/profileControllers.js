@@ -1,5 +1,4 @@
-const User = require("../models/userModel");
-
+import User from "../models/userModels.js";
 const getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -16,7 +15,4 @@ const getProfile = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-module.exports = {
-  getProfile,
-};
+export { getProfile };
