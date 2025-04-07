@@ -30,7 +30,7 @@ export const getAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find({ patient: req.user.id }).sort({ date: 1 });
 
-    res.status(200).json(appointments);
+    res.status(200).json({appointments});
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch appointments", error: error.message });
   }
