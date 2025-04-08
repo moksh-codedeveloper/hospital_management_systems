@@ -4,14 +4,15 @@ import cors from "cors";
 import authRoutes from "./routers/userRoutes.js"
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
-// import appointmentRoutes from "./routers/appointmentRoutes.js"
+import appointmentRoutes from "./routers/appointmentRoutes.js"
 dotenv.config();
 connectDB();
 const app = express();
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+// Middleware
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+// CORS configuration
 const corsOptions = {
   origin: "http://localhost:3000", // Replace with your frontend URL
   methods: ["GET", "POST", "PUT", "DELETE"],
@@ -21,7 +22,7 @@ app.use(cors(corsOptions));
 
 
 app.use("/api/auth", authRoutes);
-// app.use("/api/appointments",appointmentRoutes);
+app.use("/api/appointments",appointmentRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

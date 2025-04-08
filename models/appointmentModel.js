@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 
 const appointmentSchema = new mongoose.Schema({
-  patient: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -11,17 +11,30 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reason: String,
+  department: {
+    type: String,
+    required: true,
+  },
   appointmentDate: {
     type: Date,
     required: true,
   },
+  appointmentTime: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
-    enum: ['Scheduled', 'Completed', 'Cancelled'],
-    default: 'Scheduled',
+    enum: ['pending', 'confirmed', 'cancelled', 'completed'],
+    default: 'pending',
   },
-}, { timestamps: true });
+  reason: {
+    type: String,
+    default: '',
+  },
+}, {
+  timestamps: true,
+});
 
-const Appointment = mongoose.model('Appointment', appointmentSchema);
-export default Appointment;
+
+export const Appointment = mongoose.model('Appointment', appointmentSchema);
