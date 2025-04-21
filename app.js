@@ -5,6 +5,8 @@ import authRoutes from "./routers/userRoutes.js"
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import appointmentRoutes from "./routers/appointmentRoutes.js"
+import adminRoutes from "./routers/adminRoutes.js";
+import doctorRoutes from "./routers/doctorRoutes.js"
 dotenv.config();
 connectDB();
 const app = express();
@@ -23,6 +25,8 @@ app.use(cors(corsOptions));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/appointments",appointmentRoutes);
+app.use("/api/admin", adminRoutes)
+app.use("/api/doctors", doctorRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

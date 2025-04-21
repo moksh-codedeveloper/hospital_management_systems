@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Admin from '../models/admin.model.js'; // make sure you have this model
+import Admin from '../models/userModels.js'; // make sure you have this model
 
 export const verifyAdmin = async (req, res, next) => {
   const token = req.cookies.token; // using HTTP-only cookies
