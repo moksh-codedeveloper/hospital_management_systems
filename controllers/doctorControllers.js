@@ -6,7 +6,7 @@ export const addDoctor = async (req, res) => {
     try{
         // Connect to the database
         await connectDB();
-        const {name, email, password, specialisation, experience} = req.body;
+        const {username, email, password, specialisation, experience} = req.body;
         const isUser = await userModels.findOne({email});
         if(isUser) {
             return res.status(400).json({message: "User already exists"});
@@ -16,7 +16,7 @@ export const addDoctor = async (req, res) => {
         }
        const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new userModels({
-            name,
+            username,
             email,
             password: hashedPassword,
             role: "doctor",
@@ -31,14 +31,13 @@ export const addDoctor = async (req, res) => {
     }
 }
 export const loginDoctor = async (req, res) => {
-    const { email, password } = req.body;
-
     try {
+        const { email, password } = req.body;
         // Connect to the database
         await connectDB();
 
         // Find the doctor by email and role: "doctor"
-        const doctor = await User.findOne({ email, role: "doctor" });
+        const doctor = await userModels.findOne({ email, role: "doctor" });
         if (!doctor) {
             return res.status(404).json({ message: "Doctor not found" });
         }
@@ -56,21 +55,22 @@ export const loginDoctor = async (req, res) => {
 
         // Respond with the token
         res.status(200).json({ message: "Login successful", token, doctor: { id: doctor._id, name: doctor.name, email: doctor.email, role: doctor.role } });
-
+        console.log("Doctor logged in successfully", doctor);
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
         res.status(500).json({ message: "Internal server error" });
     }
 };
 
 export const getDoctor = async (req, res) => {
-    const {doctorID} = req.params;
+    const {id} = req.params;
     try {
-        const doctor = await userModels.findById(doctorID);
+        const doctor = await userModels.findById(id);
         if(!doctor || !doctor.role === "doctor") {
             return res.status(404).json({message: "Doctor not found"});
         }
         res.status(200).json({message: "Doctor found", doctor});
+        console.log("Doctor found", doctor);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: "Server error", error: error.message});
@@ -84,6 +84,7 @@ export const getAllDoctors = async (req, res) => {
             return res.status(404).json({message: "No doctors found"});
         }
         res.status(200).json({message: "Doctors found", doctors});
+        console.log("Doctors found", doctors);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: "Server error", error: error.message});
@@ -91,14 +92,15 @@ export const getAllDoctors = async (req, res) => {
 }
 
 export const deleteDoctor = async (req, res) => {
-    const {doctorID} = req.params;
+    const {id} = req.params;
     try {
-        const doctor = await userModels.findById(doctorID);
+        const doctor = await userModels.findById(id);
         if(!doctor || doctor.role !== "doctor") {
             return res.status(404).json({message: "Doctor not found"});
         }
-        await userModels.findByIdAndDelete(doctorID);
+        await userModels.findByIdAndDelete(id);
         res.status(200).json({message: "Doctor deleted successfully"});
+        console.log("Doctor deleted successfully", doctor);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: "Server error", error: error.message});
@@ -106,24 +108,25 @@ export const deleteDoctor = async (req, res) => {
 }
 
 export const updateDoctor = async (req, res) => {
-    const { doctorID } = req.params;
-    const { name, email, specialization, experience } = req.body;
+    const { id } = req.params;
+    const { username, email, specialisation, experience } = req.body;
 
     try {
-        const doctor = await userModels.findById(doctorID);
-        if (!doctor || doctor.role !== "doctor") {
+        const doctor = await userModels.findById(id);
+        if (!doctor) {
             return res.status(404).json({ message: "Doctor not found" });
         }
 
         // Update fields if provided
-        if (name) doctor.name = name;
+        if (username) doctor.username = username;
         if (email) doctor.email = email;
-        if (specialization) doctor.specialization = specialization;
+        if (specialisation) doctor.specialisation = specialisation;
         if (experience) doctor.experience = experience;
 
         await doctor.save();
 
         res.status(200).json({ message: "Doctor updated successfully", doctor });
+        console.log("Doctor updated successfully", doctor);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error", error: error.message });

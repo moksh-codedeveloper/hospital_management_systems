@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
     },
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "doctor", "patient"],
       default: "patient",
     },
-    specialization: {
+    specialisation: {
       type: String,
       required: function () {
         return this.role === "doctor"; // Required only for doctors
