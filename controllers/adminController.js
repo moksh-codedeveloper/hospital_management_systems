@@ -68,7 +68,7 @@ export const getAdminProfile = async (req, res) => {
         }
 
         // Send the admin profile data
-        res.status(200).json(admin);
+        res.status(200).json({admin});
 
     } catch (error) {
         console.error("Get admin profile error:", error);
