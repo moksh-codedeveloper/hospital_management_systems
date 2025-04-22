@@ -1,8 +1,8 @@
 import Router from 'express';
 const router = Router();
-import {getDoctor, getAllDoctors, addDoctor, loginDoctor, deleteDoctor, updateDoctor} from "../controllers/doctorControllers.js"
+import {getDoctor, getAllDoctors, addDoctor, loginDoctor, deleteDoctor, updateDoctor, logout} from "../controllers/doctorControllers.js"
 import { verifyAdmin } from '../middleware/verifyAdmin.js';
-import { logout } from '../controllers/userController.js';
+// import { logout } from '../controllers/userController.js';
 
 router.post("/create",verifyAdmin,  addDoctor);
 router.get("/",verifyAdmin, getAllDoctors);

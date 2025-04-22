@@ -52,7 +52,9 @@ export const loginDoctor = async (req, res) => {
         const token = jwt.sign({ id: doctor._id, role: doctor.role }, process.env.JWT_SECRET, {
             expiresIn: "1d",
         });
-
+        res.cookie("doctorToken", token, {
+            httpOnly: true,
+        })
         // Respond with the token
         res.status(200).json({ message: "Login successful", token, doctor: { id: doctor._id, name: doctor.name, email: doctor.email, role: doctor.role } });
         console.log("Doctor logged in successfully", doctor);
@@ -132,5 +134,21 @@ export const updateDoctor = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-
-
+export const logout = (req, res) => {
+    try {
+      res.cookie("doctorToken", "", {
+        httpOnly: true,
+        expires: new Date(0), // Expire immediately
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      });
+      return res.status(200).json({
+        message: "Logout successful",
+        success: true,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: error.message,
+      });
+    }
+  };

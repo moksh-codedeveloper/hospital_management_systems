@@ -30,7 +30,7 @@ export const loginAdmin = async (req, res) => {
         );
 
         // Set the token in an HTTP-only cookie
-        res.cookie("token", token, {
+        res.cookie("adminToken", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Strict",
@@ -53,7 +53,7 @@ export const getAdminProfile = async (req, res) => {
         await connectDB();
 
         // Get the admin ID from the JWT token
-        const token = req.cookies.token;
+        const token = req.cookies.adminToken;
         if (!token) {
             return res.status(401).json({ message: "Unauthorized" });
         }
@@ -75,3 +75,21 @@ export const getAdminProfile = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+export const logout = (req, res) => {
+  try {
+    res.cookie("adminToken", "", {
+      httpOnly: true,
+      expires: new Date(0), // Expire immediately
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+    return res.status(200).json({
+      message: "Logout successful",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};

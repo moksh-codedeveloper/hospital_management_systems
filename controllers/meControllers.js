@@ -3,7 +3,7 @@ import userModel from "../models/userModels.js";
 
 export const getMe = async (req, res) => {
     try {
-        const token = req.cookies.token;
+        const token = req.cookies.doctorToken;
         if (!token) {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
