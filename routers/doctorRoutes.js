@@ -7,7 +7,7 @@ import { verifyAdmin } from '../middleware/verifyAdmin.js';
 router.post("/create",verifyAdmin,  addDoctor);
 router.get("/",verifyAdmin, getAllDoctors);
 router.get("/get/:id",verifyAdmin, getDoctor);
-router.patch("/update/:id",verifyAdmin, updateDoctor);
+router.put("/update/:id",verifyAdmin, updateDoctor);
 router.delete("/delete/:id",verifyAdmin, deleteDoctor);
 router.post("/login", loginDoctor);
 router.get("/logout", logout);
