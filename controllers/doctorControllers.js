@@ -6,11 +6,15 @@ export const addDoctor = async (req, res) => {
     try{
         // Connect to the database
         await connectDB();
+        // console.log("Connected to the database");
         const {username, email, password, specialisation, experience} = req.body;
+        // console.log("Request body:", req.body, "Username:", username, "Email:", email, "Password:", password, "Specialisation:", specialisation, "Experience:", experience);
         const isUser = await userModels.findOne({email});
+        // console.log("Is user:", isUser);
         if(isUser) {
             return res.status(400).json({message: "User already exists"});
         }
+        // console.log("User does not exist");
         if(!specialisation || !experience) {
             return res.status(400).json({message: "Please provide all fields"});
         }
@@ -23,6 +27,7 @@ export const addDoctor = async (req, res) => {
             specialisation,
             experience
         });
+        console.log("New user:", newUser);
         await newUser.save();
         res.status(201).json({message: "Doctor added successfully", data: newUser});
     } catch (error) {

@@ -5,11 +5,11 @@ import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
   try {
     console.log("Api is working");
-    const { name, email, password, role } = req.body;
-    console.log("🧠 Incoming Data:", { name, email, password, role });
+    const { username, email, password, role } = req.body;
+    console.log("🧠 Incoming Data:", { username, email, password, role });
 
     // Validation check
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       console.log("❌ Missing fields");
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -17,7 +17,7 @@ export const register = async (req, res) => {
     if (userExists) return res.status(400).json({ message: "Email already registered" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ name, email, password: hashedPassword, role });
+    const newUser = await User.create({ username, email, password: hashedPassword, role });
 
     res.status(201).json({ message: "Registered successfully", data: newUser });
     
