@@ -5,7 +5,7 @@ import {Appointment} from '../models/appointmentModel.js';
 // @access  Protected
 const createAppointment = async (req, res) => {
   try {
-    const { doctorName, department, appointmentDate, appointmentTime, reason } = req.body;
+    const { doctorName, department, appointmentDate, appointmentTime, reason, patientName } = req.body;
     console.log("User from request:", req.user);
     console.log("Request body:", req.body);
     if (!doctorName || !department || !appointmentDate || !appointmentTime) {
@@ -19,9 +19,10 @@ const createAppointment = async (req, res) => {
       appointmentDate,
       appointmentTime,
       reason,
+      patientName,
     });
 
-    res.status(201).json(appointment);
+    res.status(201).json({appointment});
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
